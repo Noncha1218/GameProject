@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 100f;
     public Transform cameraTransform;
 
+    [Header("アニメーション")]
+    public Animator animator;
+
     private CharacterController controller;
     private Vector3 velocity;
     private float xRotation = 0f;
@@ -17,7 +20,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked; // カーソルを非表示
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -27,20 +30,27 @@ public class PlayerController : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // 上下の角度制限
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
 
         // WASDで移動
         float moveX = Input.GetAxis("Horizontal");
+        
         float moveZ = Input.GetAxis("Vertical");
+        Debug.Log("moveX: " + moveX + " moveZ: " + moveZ);
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         controller.Move(move * moveSpeed * Time.deltaTime);
 
+        // アニメーション
+        float speed = new Vector2(moveX, moveZ).magnitude;
+        animator.SetFloat("Speed", speed);
+
         // 重力
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+        Debug.Log("Speed: " + speed + " Animator: " + (animator != null ? "OK" : "NULL"));
     }
 }
