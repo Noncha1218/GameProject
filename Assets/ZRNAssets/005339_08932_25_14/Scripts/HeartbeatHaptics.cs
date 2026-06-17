@@ -9,7 +9,7 @@ public class HeartbeatHaptics : MonoBehaviour
 
     [Header("鉄骨設定")]
     public Transform beam;        // 鉄骨のGameObject
-    public float beamWidth = 1.0f; // 鉄骨の幅（メートル）
+    public float beamWidth = 0.4f; // 鉄骨の幅（メートル）
 
     private Gamepad gamepad;
     private float timer = 0f;
