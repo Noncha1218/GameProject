@@ -22,7 +22,13 @@ public class GameOverManager : MonoBehaviour
     {
         if (gameOverUI.activeSelf)
         {
+            // コントローラーのAボタン
             if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame)
+            {
+                RestartGame();
+            }
+            // キーボードのRキー
+            if (Input.GetKeyDown(KeyCode.R))
             {
                 RestartGame();
             }

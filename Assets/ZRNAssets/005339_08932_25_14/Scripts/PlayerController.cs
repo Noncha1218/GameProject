@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [Header("アニメーション")]
     public Animator animator;
 
+    [Header("ジャンプ設定")]
+    public float jumpHeight = 3f;
+
     private CharacterController controller;
     private Vector3 velocity;
     private float xRotation = 0f;
@@ -25,32 +29,33 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // マウスで視点回転
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
 
-        // WASDで移動
         float moveX = Input.GetAxis("Horizontal");
-        
         float moveZ = Input.GetAxis("Vertical");
-        Debug.Log("moveX: " + moveX + " moveZ: " + moveZ);
-
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         controller.Move(move * moveSpeed * Time.deltaTime);
 
-        // アニメーション
         float speed = new Vector2(moveX, moveZ).magnitude;
         animator.SetFloat("Speed", speed);
 
-        // 重力
+        if (controller.isGrounded)
+        {
+            velocity.y = -2f;
+            if (Input.GetButtonDown("Jump") ||
+                (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
+        }
+
         velocity.y += gravity * Time.deltaTime;
+        velocity.y = Mathf.Max(velocity.y, -20f);
         controller.Move(velocity * Time.deltaTime);
-        Debug.Log("Speed: " + speed + " Animator: " + (animator != null ? "OK" : "NULL"));
     }
 }

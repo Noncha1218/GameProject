@@ -28,6 +28,7 @@ public class HeartbeatHaptics : MonoBehaviour
         // キャラと鉄骨中心のX軸のズレ
         Vector3 localPos = beam.InverseTransformPoint(transform.position);
         float offset = Mathf.Abs(localPos.x);
+        Debug.Log("localPos: " + localPos);
 
         // 端からの距離を0〜1に正規化（0=端、1=中央）
         float distanceRatio = 1f - (offset / (beamWidth / 2f));
