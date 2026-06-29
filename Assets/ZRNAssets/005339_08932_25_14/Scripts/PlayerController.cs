@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        velocity.y = -2f; // ‚±‚ê‚ð’Ç‰Á
     }
 
     void Update()

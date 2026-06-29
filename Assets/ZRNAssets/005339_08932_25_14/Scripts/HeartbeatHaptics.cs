@@ -13,7 +13,7 @@ public class HeartbeatHaptics : MonoBehaviour
 
     private Gamepad gamepad;
     private float timer = 0f;
-    private float currentBPM;
+    public float currentBPM;
 
     void Start()
     {

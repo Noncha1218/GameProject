@@ -13868,6 +13868,7 @@ MonoBehaviour:
   maxBPM: 150
   beam: {fileID: 1100718907}
   beamWidth: 1
+  currentBPM: 0
 --- !u!1 &1711041242
 GameObject:
   m_ObjectHideFlags: 0
