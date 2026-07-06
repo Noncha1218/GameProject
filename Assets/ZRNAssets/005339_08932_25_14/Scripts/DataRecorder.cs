@@ -6,7 +6,8 @@ public class DataRecorder : MonoBehaviour
 {
     [Header("記録設定")]
     public HeartbeatHaptics heartbeatHaptics;
-    public float dangerBPM = 100f; // これ以上で危険ゾーンとみなす
+    public float dangerBPM = 100f;
+    public string participantID = "player2";
 
     private int fallCount = 0;
     private float dangerTime = 0f;
@@ -19,7 +20,6 @@ public class DataRecorder : MonoBehaviour
 
         playTime += Time.deltaTime;
 
-        // 危険ゾーンにいる時間を記録
         if (heartbeatHaptics != null && heartbeatHaptics.currentBPM >= dangerBPM)
         {
             dangerTime += Time.deltaTime;
@@ -34,18 +34,29 @@ public class DataRecorder : MonoBehaviour
     public void StopAndSave()
     {
         isRecording = false;
+        Debug.Log("参加者ID: " + participantID); // 追加
         SaveToCSV();
     }
 
     void SaveToCSV()
     {
         string path = Application.dataPath + "/result.csv";
-        string data = "項目,値\n";
-        data += "プレイ時間(秒)," + playTime.ToString("F2") + "\n";
-        data += "落下回数," + fallCount + "\n";
-        data += "危険ゾーン滞在時間(秒)," + dangerTime.ToString("F2") + "\n";
-
-        File.WriteAllText(path, data);
-        Debug.Log("データを保存しました: " + path);
+        try
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+            using (StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8))
+            {
+                if (new FileInfo(path).Length == 0)
+                {
+                    sw.WriteLine("参加者ID,プレイ時間(秒),落下回数,危険ゾーン滞在時間(秒)");
+                }
+                sw.WriteLine(participantID + "," + playTime.ToString("F2") + "," + fallCount + "," + dangerTime.ToString("F2"));
+            }
+            Debug.Log("データを保存しました: " + path);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("CSVの保存に失敗しました: " + e.Message);
+        }
     }
 }

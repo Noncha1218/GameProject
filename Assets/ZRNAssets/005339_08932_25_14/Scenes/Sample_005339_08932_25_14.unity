@@ -13785,6 +13785,7 @@ GameObject:
   - component: {fileID: 1696649103}
   - component: {fileID: 1696649102}
   - component: {fileID: 1696649105}
+  - component: {fileID: 1696649106}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -13869,6 +13870,21 @@ MonoBehaviour:
   beam: {fileID: 1100718907}
   beamWidth: 1
   currentBPM: 0
+--- !u!114 &1696649106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696649101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfef0f651d78f3947912e677b3400a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heartbeatHaptics: {fileID: 1696649105}
+  dangerBPM: 100
+  participantID: player2
 --- !u!1 &1711041242
 GameObject:
   m_ObjectHideFlags: 0
