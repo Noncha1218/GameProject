@@ -7,7 +7,7 @@ public class DataRecorder : MonoBehaviour
     [Header("ãLò^ê›íË")]
     public HeartbeatHaptics heartbeatHaptics;
     public float dangerBPM = 100f;
-    public string participantID = "player2";
+    public string participantID = "player1";
 
     private int fallCount = 0;
     private float dangerTime = 0f;
@@ -24,6 +24,13 @@ public class DataRecorder : MonoBehaviour
         {
             dangerTime += Time.deltaTime;
         }
+    }
+    public void ResetData()
+    {
+        fallCount = 0;
+        dangerTime = 0f;
+        playTime = 0f;
+        isRecording = true;
     }
 
     public void RecordFall()

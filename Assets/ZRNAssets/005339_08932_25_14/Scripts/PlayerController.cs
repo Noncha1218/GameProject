@@ -45,9 +45,17 @@ public class PlayerController : MonoBehaviour
         float speed = new Vector2(moveX, moveZ).magnitude;
         animator.SetFloat("Speed", speed);
 
-        if (controller.isGrounded)
+        Debug.Log("isGrounded: " + controller.isGrounded);
+
+        // 地面に接地してたらvelocityをリセット
+        if (controller.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+        }
+            if (controller.isGrounded)
+        {
+
+           
             if (Input.GetButtonDown("Jump") ||
                 (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame))
             {

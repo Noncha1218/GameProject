@@ -53,6 +53,7 @@ public class GameOverManager : MonoBehaviour
         if (recorder != null)
         {
             recorder.StopAndSave();
+            recorder.ResetData(); // ƒŠƒZƒbƒg‚ð’Ç‰Á
         }
 
         gameOverUI.SetActive(false);
