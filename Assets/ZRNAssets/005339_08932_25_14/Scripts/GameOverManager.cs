@@ -2,9 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+
 public class GameOverManager : MonoBehaviour
 {
     public GameObject gameOverUI;
+    public Transform player;
+
+    private Vector3 lastSafePosition;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -13,34 +18,60 @@ public class GameOverManager : MonoBehaviour
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            // 落下回数を記録
+
             DataRecorder recorder = other.GetComponent<DataRecorder>();
             if (recorder != null)
             {
                 recorder.RecordFall();
             }
-
-            }
+        }
     }
+
+    public void SetLastSafePosition(Vector3 position)
+    {
+        lastSafePosition = position;
+    }
+
     void Update()
     {
         if (gameOverUI.activeSelf)
         {
-            // コントローラーのAボタン
             if (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame)
             {
-                RestartGame();
+                RestartFromLastPosition();
             }
-            // キーボードのRキー
             if (Input.GetKeyDown(KeyCode.R))
             {
-                RestartGame();
+                RestartFromLastPosition();
             }
         }
     }
+
+    public void RestartFromLastPosition()
+    {
+        DataRecorder recorder = FindObjectOfType<DataRecorder>();
+        if (recorder != null)
+        {
+            recorder.StopAndSave();
+        }
+
+        gameOverUI.SetActive(false);
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // プレイヤーを最後の安全な位置に移動
+        if (player != null)
+        {
+            CharacterController cc = player.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            player.position = lastSafePosition;
+            if (cc != null) cc.enabled = true;
+        }
+    }
+
     public void RestartGame()
     {
-        // データ保存を追加
         DataRecorder recorder = FindObjectOfType<DataRecorder>();
         if (recorder != null)
         {

@@ -11874,6 +11874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverUI: {fileID: 522550456}
+  player: {fileID: 1696649104}
 --- !u!65 &979699968
 BoxCollider:
   m_ObjectHideFlags: 0

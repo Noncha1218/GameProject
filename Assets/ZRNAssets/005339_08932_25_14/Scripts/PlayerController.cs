@@ -54,7 +54,15 @@ public class PlayerController : MonoBehaviour
                 velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
         }
-
+        // 安全な位置を定期的に記録
+        if (controller.isGrounded)
+        {
+            GameOverManager gom = FindObjectOfType<GameOverManager>();
+            if (gom != null)
+            {
+                gom.SetLastSafePosition(transform.position);
+            }
+        }
         velocity.y += gravity * Time.deltaTime;
         velocity.y = Mathf.Max(velocity.y, -20f);
         controller.Move(velocity * Time.deltaTime);
