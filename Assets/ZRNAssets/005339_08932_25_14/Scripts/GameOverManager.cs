@@ -52,7 +52,7 @@ public class GameOverManager : MonoBehaviour
         DataRecorder recorder = FindObjectOfType<DataRecorder>();
         if (recorder != null)
         {
-            recorder.StopAndSave();
+           
             recorder.ResetData(); // ƒŠƒZƒbƒg‚ð’Ç‰Á
         }
 
@@ -73,11 +73,7 @@ public class GameOverManager : MonoBehaviour
 
     public void RestartGame()
     {
-        DataRecorder recorder = FindObjectOfType<DataRecorder>();
-        if (recorder != null)
-        {
-            recorder.StopAndSave();
-        }
+       
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

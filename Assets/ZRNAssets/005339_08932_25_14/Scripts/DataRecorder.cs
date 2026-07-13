@@ -27,12 +27,16 @@ public class DataRecorder : MonoBehaviour
     }
     public void ResetData()
     {
-        fallCount = 0;
-        dangerTime = 0f;
-        playTime = 0f;
-        isRecording = true;
+        
+       
     }
-
+    public void StartRecording()
+    {
+        if (!isRecording) // まだ記録してないときだけスタート
+        {
+            isRecording = true;
+        }
+    }
     public void RecordFall()
     {
         fallCount++;
@@ -66,4 +70,5 @@ public class DataRecorder : MonoBehaviour
             Debug.LogWarning("CSVの保存に失敗しました: " + e.Message);
         }
     }
+    
 }
