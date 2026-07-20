@@ -29,6 +29,17 @@ public class HeartbeatHaptics : MonoBehaviour
         if (other.CompareTag("Beam"))
         {
             isOnBeam = true;
+            // BeamCenterを自動取得
+            Transform parent = other.transform.parent;
+            Transform beamCenter = parent.Find("BeamCenter");
+            if (beamCenter != null)
+            {
+                beam = beamCenter;
+            }
+            else
+            {
+                beam = parent;
+            }
             // 記録スタート
             DataRecorder recorder = GetComponent<DataRecorder>();
             if (recorder != null)
