@@ -49,13 +49,7 @@ public class GameOverManager : MonoBehaviour
 
     public void RestartFromLastPosition()
     {
-        DataRecorder recorder = FindObjectOfType<DataRecorder>();
-        if (recorder != null)
-        {
-           
-            recorder.ResetData(); // ƒŠƒZƒbƒg‚ð’Ç‰Á
-        }
-
+       
         gameOverUI.SetActive(false);
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;

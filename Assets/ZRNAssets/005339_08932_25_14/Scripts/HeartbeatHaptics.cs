@@ -15,6 +15,7 @@ public class HeartbeatHaptics : MonoBehaviour
     private float timer = 0f;
     public float currentBPM;
     private bool isOnBeam = false;
+    private bool hasSaved = false;
 
     void Start()
     {
@@ -23,32 +24,26 @@ public class HeartbeatHaptics : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other)
-
     {
-        Debug.Log("触れた: " + other.tag);
         if (other.CompareTag("Beam"))
         {
             isOnBeam = true;
-            // BeamCenterを自動取得
+            hasSaved = false;
+
             Transform parent = other.transform.parent;
             Transform beamCenter = parent.Find("BeamCenter");
-            if (beamCenter != null)
-            {
-                beam = beamCenter;
-            }
-            else
-            {
-                beam = parent;
-            }
-            // 記録スタート
+            beam = beamCenter != null ? beamCenter : parent;
+
             DataRecorder recorder = GetComponent<DataRecorder>();
             if (recorder != null)
             {
                 recorder.StartRecording();
             }
         }
-        if (other.CompareTag("SavePoint"))
+
+        if (other.CompareTag("SavePoint") && !hasSaved)
         {
+            hasSaved = true;
             DataRecorder recorder = GetComponent<DataRecorder>();
             if (recorder != null)
             {
@@ -56,7 +51,7 @@ public class HeartbeatHaptics : MonoBehaviour
                 recorder.ResetData();
             }
         }
-            }
+    }
 
     void OnTriggerExit(Collider other)
     {
@@ -70,7 +65,6 @@ public class HeartbeatHaptics : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("isOnBeam: " + isOnBeam + " gamepad: " + (gamepad != null ? "OK" : "NULL") + " beam: " + (beam != null ? "OK" : "NULL"));
         if (!isOnBeam || beam == null)
         {
             gamepad?.SetMotorSpeeds(0f, 0f);

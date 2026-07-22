@@ -12,7 +12,7 @@ public class DataRecorder : MonoBehaviour
     private int fallCount = 0;
     private float dangerTime = 0f;
     private float playTime = 0f;
-    private bool isRecording = true;
+    private bool isRecording = false;
 
     void Update()
     {
@@ -27,11 +27,14 @@ public class DataRecorder : MonoBehaviour
     }
     public void ResetData()
     {
-        
-       
+        fallCount = 0;
+        dangerTime = 0f;
+        playTime = 0f;
     }
+    
     public void StartRecording()
     {
+        
         if (!isRecording) // まだ記録してないときだけスタート
         {
             isRecording = true;
