@@ -21,6 +21,18 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private float xRotation = 0f;
 
+    [Header("風設定")]
+    public float windForce = 2f;
+    public float windMinTime = 1f;  // 最短待機時間
+    public float windMaxTime = 2.2f;  // 最長待機時間
+    private float windTimer = 0f;
+    private float windInterval = 0f;
+    private Vector3 windVelocity = Vector3.zero;
+    private float windDurationTimer = 0f;
+    private float windDuration = 0.5f;
+    private int windCount = 0; // 風を吹かせた回数
+    private bool windScheduled = false;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -30,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
         xRotation -= mouseY;
@@ -46,6 +59,40 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", speed);
 
         Debug.Log("isGrounded: " + controller.isGrounded);
+
+        // 風の処理（鉄骨の上にいるときだけ）
+        HeartbeatHaptics haptics = GetComponent<HeartbeatHaptics>();
+        bool onBeam = haptics != null && haptics.isOnFirstBeam;
+
+        if (onBeam && windCount < 2 && !windScheduled)
+        {
+            windInterval = Random.Range(windMinTime, windMaxTime);
+            windScheduled = true;
+            windTimer = 0f;
+        }
+
+        if (windScheduled && windCount < 2)
+        {
+            windTimer += Time.deltaTime;
+            if (windTimer >= windInterval)
+            {
+                windCount++;
+                windScheduled = false;
+                float direction = Random.Range(0, 2) == 0 ? -1f : 1f;
+                windVelocity = transform.right * direction * windForce;
+                windDurationTimer = windDuration;
+            }
+        }
+
+        if (windDurationTimer > 0)
+        {
+            controller.Move(windVelocity * Time.deltaTime);
+            windDurationTimer -= Time.deltaTime;
+        }
+        else
+        {
+            windVelocity = Vector3.zero;
+        }
 
         // 地面に接地してたらvelocityをリセット
         if (controller.isGrounded && velocity.y < 0)

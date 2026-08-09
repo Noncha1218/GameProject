@@ -14006,6 +14006,9 @@ MonoBehaviour:
   cameraTransform: {fileID: 1832395}
   animator: {fileID: 449347124}
   jumpHeight: 1
+  windForce: 0.8
+  windMinTime: 2
+  windMaxTime: 8
 --- !u!143 &1696649103
 CharacterController:
   m_ObjectHideFlags: 0
@@ -14065,6 +14068,8 @@ MonoBehaviour:
   beam: {fileID: 1100718907}
   beamWidth: 1
   currentBPM: 0
+  isOnBeam: 0
+  isOnFirstBeam: 0
 --- !u!114 &1696649106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14528,7 +14533,7 @@ GameObject:
   - component: {fileID: 1831276173}
   m_Layer: 6
   m_Name: tecchuu
-  m_TagString: Beam
+  m_TagString: BeamFirst
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

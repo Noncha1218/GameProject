@@ -14,7 +14,8 @@ public class HeartbeatHaptics : MonoBehaviour
     private Gamepad gamepad;
     private float timer = 0f;
     public float currentBPM;
-    private bool isOnBeam = false;
+    public bool isOnBeam = false;
+    public bool isOnFirstBeam = false;
     private bool hasSaved = false;
 
     void Start()
@@ -25,9 +26,10 @@ public class HeartbeatHaptics : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Beam"))
+        if (other.CompareTag("Beam") || other.CompareTag("BeamFirst"))
         {
             isOnBeam = true;
+            isOnFirstBeam = true;
             hasSaved = false;
 
             Transform parent = other.transform.parent;
@@ -55,9 +57,10 @@ public class HeartbeatHaptics : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Beam"))
+        if (other.CompareTag("Beam") || other.CompareTag("BeamFirst"))
         {
             isOnBeam = false;
+            isOnFirstBeam = false;
             gamepad?.SetMotorSpeeds(0f, 0f);
             currentBPM = minBPM;
         }
