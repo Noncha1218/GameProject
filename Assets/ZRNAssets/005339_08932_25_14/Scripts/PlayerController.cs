@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     [Header("ïóê›íË")]
     public float windForce = 2f;
     public float windMinTime = 1f;  // ç≈íZë“ã@éûä‘
-    public float windMaxTime = 2.2f;  // ç≈í∑ë“ã@éûä‘
+    public float windMaxTime = 2f;  // ç≈í∑ë“ã@éûä‘
     private float windTimer = 0f;
     private float windInterval = 0f;
     private Vector3 windVelocity = Vector3.zero;
@@ -99,7 +99,10 @@ public class PlayerController : MonoBehaviour
         {
             velocity.y = -2f;
         }
-            if (controller.isGrounded)
+        
+        bool canJump = controller.isGrounded || (haptics != null && haptics.isOnBeam);
+
+        if (canJump)
         {
 
            
@@ -121,5 +124,11 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         velocity.y = Mathf.Max(velocity.y, -20f);
         controller.Move(velocity * Time.deltaTime);
+    }
+    public void ResetWind()
+    {
+        windCount = 0;
+        windScheduled = false;
+        windTimer = 0f;
     }
 }
