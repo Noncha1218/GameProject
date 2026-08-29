@@ -82,7 +82,13 @@ public class HeartbeatHaptics : MonoBehaviour
     }
 
     void Update()
+
     {
+        // ゲージの表示切り替え
+        if (dangerMeter != null)
+        {
+            dangerMeter.gameObject.SetActive(mode == VibrationMode.None);
+        }
         if (!isOnBeam || beam == null)
         {
             gamepad?.SetMotorSpeeds(0f, 0f);
@@ -95,6 +101,8 @@ public class HeartbeatHaptics : MonoBehaviour
         float distanceRatio = 1f - (offset / (beamWidth / 2f));
         distanceRatio = Mathf.Clamp01(distanceRatio);
         currentBPM = Mathf.Lerp(maxBPM, minBPM, distanceRatio);
+
+        
 
         if (mode == VibrationMode.None)
         {
