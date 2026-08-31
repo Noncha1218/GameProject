@@ -2,9 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
 
-	[SerializeField]
+	
+   
+
+
+[SerializeField]
 	GameObject cameraObject;
 	[SerializeField]
 	GameObject[] targetCameraPoints;

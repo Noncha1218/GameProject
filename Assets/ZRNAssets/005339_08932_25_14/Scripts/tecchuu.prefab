@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 1995943159134076615}
   - component: {fileID: 2241775015527621328}
   - component: {fileID: 5328821459350368669}
+  - component: {fileID: -4525824371020806713}
   m_Layer: 0
   m_Name: tecchuu
   m_TagString: Untagged
@@ -140,3 +141,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.99999994, y: 1.0000001, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4525824371020806713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6536280984618627171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f796801adb84165a0f9d507d51ab6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QueryObjects: []
