@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class HeartbeatHaptics : MonoBehaviour
 {
+    public string currentBeamTag = "";
     public enum VibrationMode
     {
         None,      // 条件A：振動なし
@@ -42,8 +43,9 @@ public class HeartbeatHaptics : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Beam") || other.CompareTag("BeamFirst"))
+        if (other.CompareTag("Beam") || other.CompareTag("BeamFirst") || other.CompareTag("BeamSecond"))
         {
+            currentBeamTag = other.tag;
             isOnBeam = true;
             isOnFirstBeam = true;
             hasSaved = false;
@@ -71,8 +73,9 @@ public class HeartbeatHaptics : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Beam") || other.CompareTag("BeamFirst"))
+        if (other.CompareTag("Beam") || other.CompareTag("BeamFirst") || other.CompareTag("BeamSecond"))
         {
+            currentBeamTag = "";
             isOnBeam = false;
             isOnFirstBeam = false;
             gamepad?.SetMotorSpeeds(0f, 0f);

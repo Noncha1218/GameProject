@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -30,7 +31,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 windVelocity = Vector3.zero;
     private float windDurationTimer = 0f;
     private float windDuration = 0.5f;
-    private int windCount = 0; // •—‚ğ‚©‚¹‚½‰ñ”
+    private HashSet<string> windedTags = new HashSet<string>();
+    private string currentWindTag = "";
     private bool windScheduled = false;
 
     void Start()
@@ -62,21 +64,29 @@ public class PlayerController : MonoBehaviour
 
         // •—‚Ìˆ—i“Sœ‚Ìã‚É‚¢‚é‚Æ‚«‚¾‚¯j
         HeartbeatHaptics haptics = GetComponent<HeartbeatHaptics>();
-        bool onBeam = haptics != null && haptics.isOnFirstBeam;
+        string tag = haptics != null ? haptics.currentBeamTag : "";
+        bool onWindBeam = haptics != null && haptics.isOnBeam
+                          && (tag == "BeamFirst" || tag == "BeamSecond");
 
-        if (onBeam && windCount < 2 && !windScheduled)
+        if (!onWindBeam)
+        {
+            windScheduled = false;
+        }
+
+        if (onWindBeam && !windScheduled && !windedTags.Contains(tag))
         {
             windInterval = Random.Range(windMinTime, windMaxTime);
             windScheduled = true;
             windTimer = 0f;
+            currentWindTag = tag;
         }
 
-        if (windScheduled && windCount < 2)
+        if (windScheduled)
         {
             windTimer += Time.deltaTime;
             if (windTimer >= windInterval)
             {
-                windCount++;
+                windedTags.Add(currentWindTag);
                 windScheduled = false;
                 float direction = Random.Range(0, 2) == 0 ? -1f : 1f;
                 windVelocity = transform.right * direction * windForce;
@@ -125,10 +135,11 @@ public class PlayerController : MonoBehaviour
         velocity.y = Mathf.Max(velocity.y, -20f);
         controller.Move(velocity * Time.deltaTime);
     }
-    public void ResetWind()
+    public void CancelWind()
     {
-        windCount = 0;
         windScheduled = false;
         windTimer = 0f;
+        windDurationTimer = 0f;
+        windVelocity = Vector3.zero;
     }
 }
